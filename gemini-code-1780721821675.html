@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Links</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & VARIABLE THEMES
+           ========================================================================== */
+        :root {
+            --fg: #ffffff;
+            --fg-muted: #8b8b9e;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --button-bg: rgba(255, 255, 255, 0.06);
+            --button-hover: rgba(255, 255, 255, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+
+            /* Theme 1: Default Dark Ambient Presets */
+            --bg-dark: #0a0a0f;
+            --orb-dark-1: linear-gradient(135deg, #00d4aa 0%, #0066ff 100%);
+            --orb-dark-2: linear-gradient(135deg, #ff6b35 0%, #f72585 100%);
+            --accent-dark: #00d4aa;
+
+            /* Theme 2: Cyber Blue Ambient Presets */
+            --bg-blue: #020813;
+            --orb-blue-1: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --orb-blue-2: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --accent-blue: #00f2fe;
+
+            /* Theme 3: Mystic Purple Ambient Presets */
+            --bg-purple: #0b0514;
+            --orb-purple-1: linear-gradient(135deg, #b5179e 0%, #7209b7 100%);
+            --orb-purple-2: linear-gradient(135deg, #480ca8 0%, #f72585 100%);
+            --accent-purple: #b5179e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--active-bg, var(--bg-dark));
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* Ambient Fluid Background Elements */
+        .background-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--active-orb-1, var(--orb-dark-1));
+            top: -200px;
+            right: -100px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--active-orb-2, var(--orb-dark-2));
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.05); }
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.02;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Main Glassmorphism Layout Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 48px 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .bio {
+            color: var(--fg-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 320px;
+            margin: 0 auto 36px;
+        }
+
+        /* Dynamic Button Stack */
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--button-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--active-accent, var(--accent-dark)) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--button-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link:hover::before {
+            opacity: 0.05;
+        }
+
+        .social-link:active {
+            transform: translateY(0);
+        }
+
+        .icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover .icon-wrapper {
+            transform: scale(1.08);
+        }
+
+        .icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .link-label {
+            flex: 1;
+            text-align: left;
+        }
+
+        .arrow-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover .arrow-icon {
+            opacity: 0.9;
+            transform: translateX(3px);
+        }
+
+        @media (min-width: 480px) {
+            body { padding: 32px 20px; }
+            .profile-card { padding: 56px 36px; }
+            .name { font-size: 2.2rem; }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .container, .gradient-orb, .social-link { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-gradient" aria-hidden="true">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+    </div>
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <main class="container">
+        <article class="profile-card">
+            
+            <h1 id="profile-name" class="name"></h1>
+            <p id="profile-bio" class="bio"></p>
+
+            <nav id="links-container" class="social-links" aria-label="Social Media Connections"></nav>
+            
+        </article>
+    </main>
+
+    <script>
+        /* ==========================================================================
+           ✏️ EDIT YOUR BACKGROUND THEME HERE
+           Available options: "dark" , "blue" , "purple"
+           ========================================================================== */
+        const CURRENT_THEME = "dark";
+
+
+        /* ==========================================================================
+           ✏️ PROFILE DETAILS (IMAGE COMPLETELY REMOVED FROM MARKUP)
+           ========================================================================== */
+        const USER_PROFILE = {
+            name: "Trenton Butler",
+            bio: "Creator sharing code, design, and daily life in Michigan",
+        };
+
+
+        /* ==========================================================================
+           ✏️ EDIT YOUR SOCIAL MEDIA HERE (ADD/REMOVE LINES OR EDIT USERNAMES)
+           
+           Instructions:
+           - To EDIT: Change ONLY the handle string next to the 'username:' property.
+           - To REMOVE: Delete the entire row/line.
+           - To ADD: Duplicate/copy any line and update its platform data.
+           ========================================================================== */
+        const SOCIAL_LINKS = [
+            { platform: "TikTok",      username: "trenton.bu",           baseUrl: "https://tiktok.com/@",         icon: `<svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>` },
+            { platform: "Instagram",   username: "trenton.butl",         baseUrl: "https://instagram.com/",       icon: `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>` },
+            { platform: "YouTube",     username: "trenton.fu.n",         baseUrl: "https://youtube.com/@",        icon: `<svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>` },
+            { platform: "Snapchat",    username: "trenton.bu",           baseUrl: "https://snapchat.com/add/",     icon: `<svg viewBox="0 0 24 24"><path d="M12 2c-3.953 0-5.464 2.253-5.5 4.969-.015 1.25.438 1.953.797 2.453.187.266.156.406.063.609-.141.281-.594 1.203-.797 1.594-.109.203-.281.25-.484.141-.453-.25-1.5-.781-2.125-.781-.953 0-1.844.75-1.922 1.844-.063.891.438 1.484 1.156 1.703.453.141.984-.031 1.438-.172.25-.078.359.016.422.188.172.516.594 1.75.75 2.172.078.234-.016.422-.219.563-.531.359-1.578 1.047-1.578 1.953 0 .844.828 1.359 1.719 1.297.859-.063 1.547-.563 2.141-1 .219-.156.375-.125.469.078.234.547.813 1.828.984 2.219.125.281.344.25.594.063.781-.594 1.688-1.547 2.688-1.547.25 0 .5.047.75.125.922.281 1.828.953 2.734.953.25 0 .469-.031.594-.063.172-.391.75-1.672.984-2.219.094-.203.25-.234.469-.078.594.438 1.281.938 2.141 1 .891.063 1.719-.453 1.719-1.297 0-.906-1.047-1.594-1.578-1.953-.203-.141-.297-.328-.219-.563.156-.422.578-1.656.75-2.172.063-.172.172-.266.422-.188.453.141.984.313 1.438.172.719-.219 1.219-.813 1.156-1.703-.078-1.094-.969-1.844-1.922-1.844-.625 0-1.672.531-2.125.781-.203.109-.375.063-.484-.141-.203-.391-.656-1.313-.797-1.594-.094-.203-.125-.344.063-.609.359-.5.813-1.203.797-2.453C17.464 4.253 15.953 2 12 2z"/></svg>` },
+            { platform: "Twitter / X", username: "ButlerTren39671",      baseUrl: "https://twitter.com/",         icon: `<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>` }
+        ];
+
+
+        /* ==========================================================================
+           ⚙️ BACKEND GENERATION LAYER
+           ========================================================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Compute Theme System Config Overrides
+            const rootStyle = document.documentElement.style;
+            if (CURRENT_THEME === "blue") {
+                rootStyle.setProperty('--active-bg', 'var(--bg-blue)');
+                rootStyle.setProperty('--active-orb-1', 'var(--orb-blue-1)');
+                rootStyle.setProperty('--active-orb-2', 'var(--orb-blue-2)');
+                rootStyle.setProperty('--active-accent', 'var(--accent-blue)');
+            } else if (CURRENT_THEME === "purple") {
+                rootStyle.setProperty('--active-bg', 'var(--bg-purple)');
+                rootStyle.setProperty('--active-orb-1', 'var(--orb-purple-1)');
+                rootStyle.setProperty('--active-orb-2', 'var(--orb-purple-2)');
+                rootStyle.setProperty('--active-accent', 'var(--accent-purple)');
+            } else {
+                rootStyle.setProperty('--active-bg', 'var(--bg-dark)');
+                rootStyle.setProperty('--active-orb-1', 'var(--orb-dark-1)');
+                rootStyle.setProperty('--active-orb-2', 'var(--orb-dark-2)');
+                rootStyle.setProperty('--active-accent', 'var(--accent-dark)');
+            }
+
+            // Map standard profile text metadata elements
+            document.getElementById('profile-name').textContent = USER_PROFILE.name;
+            document.getElementById('profile-bio').textContent = USER_PROFILE.bio;
+
+            // Generate links nodes looping dynamically over mapped configurations
+            const container = document.getElementById('links-container');
+            SOCIAL_LINKS.forEach(link => {
+                const linkAnchor = document.createElement('a');
+                linkAnchor.href = `${link.baseUrl}${link.username}`;
+                linkAnchor.className = 'social-link';
+                linkAnchor.target = '_blank';
+                linkAnchor.rel = 'noopener noreferrer';
+                linkAnchor.setAttribute('aria-label', `Visit our official ${link.platform} workspace`);
+
+                linkAnchor.innerHTML = `
+                    <span class="icon-wrapper">${link.icon}</span>
+                    <span class="link-label">${link.platform}</span>
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                `;
+                container.appendChild(linkAnchor);
+            });
+        });
+    </script>
+</body>
+</html>
